@@ -1,5 +1,5 @@
 # Dockerfile used in execution of Github Action
-FROM public.ecr.aws/g0x6o1a2/terragrunt-with-make:1.0
+FROM public.ecr.aws/g0x6o1a2/terragrunt-with-make:1.1
 LABEL maintainer="Gruntwork <info@gruntwork.io>"
 
 ENV MISE_CONFIG_DIR=~/.config/mise
