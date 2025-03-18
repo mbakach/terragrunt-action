@@ -9,13 +9,23 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get install -y \
     curl \
+    ca-certificates \
+    make \
     git \
     jq \
     unzip \
     wget \
     sudo \
-    && rm -rf /var/lib/apt/lists/*
-
+    && rm -rf /var/lib/apt/lists/* \
+    && sudo install -m 0755 -d /etc/apt/keyrings \
+    && sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \
+    && sudo chmod a+r /etc/apt/keyrings/docker.asc \
+    && echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null \
+    && sudo apt-get update \
+    && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 RUN mkdir -p /root/.ssh
 COPY ./known_hosts /root/.ssh/known_hosts
 RUN chown -R root:root /root/.ssh
